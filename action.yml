@@ -1,0 +1,39 @@
+# Runs a liquibase command
+
+name: 'Run Liquibase Command'
+description: 'Utility to run liquibase commands'
+inputs:
+  environment:
+    description: 'Repo name (account, opportunity, contact, location'
+    required: true
+    default: ''
+  environment:
+    description: 'Environment to deploy - dev, qat, prd'
+    required: true
+    default: 'dev'
+  liquibaseCommand:
+    description: 'Command (history, calculate-checksums, clear-checksums, list-locks)'
+    required: true
+    default: 'history'
+  changeSetFile:
+    description: 'Changelog filename'
+    required: false
+    default: 'db.changelog-01.xml'
+  changesetId:
+    description: 'Liquibase change set id'
+    required: false
+    default: ''
+  changesetAuthor:
+    description: 'Liquibase change set author'
+    required: false
+    default: 'Zeal'
+  runs:
+    using: 'docker'
+    image: 'Dockerfile'
+    args: 
+      - ${{ inputs.liquibaseCommand }}
+    env:
+      environment: '${{ inputs.environment }}'
+      changeSetFile: '${{ inputs.changeSetFile }}'
+      changesetId: '${{ inputs.changesetId }}'
+      changesetAuthor: '${{ inputs.changesetAuthor }}'
